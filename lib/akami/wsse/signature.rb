@@ -124,18 +124,22 @@ module Akami
       def signed_info
         {
           "SignedInfo" => {
-            "CanonicalizationMethod/" => nil,
-            "SignatureMethod/" => nil,
-            "Reference" => [
-              #signed_info_transforms.merge(signed_info_digest_method).merge({ "DigestValue" => timestamp_digest }),
-              signed_info_transforms.merge(signed_info_digest_method).merge({ "DigestValue" => body_digest }),
-            ],
-            :attributes! => {
-              "CanonicalizationMethod/" => { "Algorithm" => ExclusiveXMLCanonicalizationAlgorithm },
-              "SignatureMethod/" => { "Algorithm" => RSASHA1SignatureAlgorithm },
-              "Reference" => { "URI" => ["##{body_id}"] },
+            "CanonicalizationMethod" => {
+              "SignatureMethod" => {
+                "Reference" => [
+                  signed_info_transforms.merge(signed_info_digest_method).merge({ "DigestValue" => body_digest }),
+                ],
+                :attributes! => {
+                  "Reference" => { "uri" => ["##{body_id}"] },
+                },
+              }, 
+              :attributes! => {
+                "SignatureMethod" => { "algorithm" => RSASHA1SignatureAlgorithm },
+              },
             },
-            :order! => [ "CanonicalizationMethod/", "SignatureMethod/", "Reference" ],
+            :attributes! => {
+              "CanonicalizationMethod" => { "algorithm" => ExclusiveXMLCanonicalizationAlgorithm },
+            },
           },
         }
       end
