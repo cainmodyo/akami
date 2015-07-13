@@ -74,10 +74,10 @@ module Akami
           :attributes! => { "Signature" => { "xmlns" => SignatureNamespace } },
         }
 
-        token.deep_merge!(binary_security_token) if certs.cert
+        #token.deep_merge!(binary_security_token) if certs.cert
 
         token.merge! :order! => []
-        [ "wsse:BinarySecurityToken", "Signature" ].each do |key|
+        [ "Signature" ].each do |key|
           token[:order!] << key if token[key]
         end
 
@@ -102,13 +102,15 @@ module Akami
         {
           "KeyInfo" => {
             "wsse:SecurityTokenReference" => {
-              "wsse:Reference/" => nil,
-              :attributes! => { "wsse:Reference/" => {
-                "ValueType" => X509v3ValueType,
-                "URI" => "##{security_token_id}",
-              } }
+              "wsse:Reference" => {
+                "x509data" => {
+                  "x509issuerserial" => {
+                    "x509issuername" => certs.cert.issuer.to_s.gsub('/',',')[1..-1],
+                    "x509serialnumber" => certs.cert.serial.to_s
+                  },
+                },
+              },
             },
-            :attributes! => { "wsse:SecurityTokenReference" => { "xmlns:wsu" => "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" } },
           },
         }
       end
