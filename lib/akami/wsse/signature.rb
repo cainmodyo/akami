@@ -100,7 +100,7 @@ module Akami
 
       def key_info
         {
-          "KeyInfo" => {
+          "ds:KeyInfo" => {
             "wsse:SecurityTokenReference" => {
               "wsse:Reference" => {
                 "ds:x509data" => {
