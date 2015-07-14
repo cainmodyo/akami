@@ -82,30 +82,32 @@ module Akami
 
     # Hook for Soap::XML that allows us to add attributes to the env:Body tag
     def body_attributes
-      if signature?
-        signature.body_attributes
-      else
-        {}
-      end
+      signature.body_attributes
+      #if signature?
+      #  signature.body_attributes
+      #else
+      #  {}
+      #end
     end
 
     # Returns the XML for a WSSE header.
     def to_xml
-      if signature? and signature.have_document?
-        Gyoku.xml wsse_signature.merge!(hash)
-      elsif username_token? && timestamp?
-        Gyoku.xml wsse_username_token.merge!(wsu_timestamp) {
-          |key, v1, v2| v1.merge!(v2) {
-            |key, v1, v2| v1.merge!(v2)
-          }
-        }
-      elsif username_token?
-        Gyoku.xml wsse_username_token.merge!(hash)
-      elsif timestamp?
-        Gyoku.xml wsu_timestamp.merge!(hash)
-      else
-        ""
-      end
+      #if signature? and signature.have_document?
+      #  Gyoku.xml wsse_signature.merge!(hash)
+      #elsif username_token? && timestamp?
+      #  Gyoku.xml wsse_username_token.merge!(wsu_timestamp) {
+      #    |key, v1, v2| v1.merge!(v2) {
+      #      |key, v1, v2| v1.merge!(v2)
+      #    }
+      #  }
+      #elsif username_token?
+      #  Gyoku.xml wsse_username_token.merge!(hash)
+      #elsif timestamp?
+      #  Gyoku.xml wsu_timestamp.merge!(hash)
+      #else
+      #  ""
+      #end
+      Gyoku.xml wsse_signature.merge!(hash)
     end
 
   private
