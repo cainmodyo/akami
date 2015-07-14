@@ -77,7 +77,7 @@ module Akami
         #token.deep_merge!(binary_security_token) if certs.cert
 
         token.merge! :order! => []
-        [ "ds:siSignature" ].each do |key|
+        [ "ds:Signature" ].each do |key|
           token[:order!] << key if token[key]
         end
 
