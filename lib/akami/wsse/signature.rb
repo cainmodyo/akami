@@ -145,18 +145,16 @@ module Akami
       def the_signature
         raise MissingCertificate, "Expected a private_key for signing" unless certs.private_key
         signed_info = at_xpath(@document, "//Envelope/Header/Security/Signature/SignedInfo")
-        puts signed_info
         signed_info = signed_info ? canonicalize(signed_info) : ""
         signature = certs.private_key.sign(OpenSSL::Digest::SHA1.new, signed_info)
-        signature #.gsub("\n", '') # TODO: DRY calls to Base64.encode64(...).gsub("\n", '')
+        Base64.encode64(signature).gsub("\n", '') # TODO: DRY calls to Base64.encode64(...).gsub("\n", '')
       end
 
       def body_digest
         body = canonicalize(at_xpath(@document, "//Envelope/Body"))
-        puts body
         Base64.encode64(OpenSSL::Digest::SHA1.digest(body)).strip
       end
-
+      
       def signed_info_digest_method
         { "ds:DigestMethod" => { "ds:DigestValue" => body_digest }, :attributes! => { "ds:DigestMethod" => { "algorithm" => SHA1DigestAlgorithm } } }
       end
