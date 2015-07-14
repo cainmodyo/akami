@@ -152,7 +152,7 @@ module Akami
 
       def body_digest
         body = canonicalize(at_xpath(@document, "//Envelope/Body"))
-        OpenSSL::Digest::SHA1.digest(body).strip
+        Base64.encode64(OpenSSL::Digest::SHA1.digest(body)).strip
       end
 
       def signed_info_digest_method
