@@ -145,7 +145,7 @@ module Akami
       def the_signature
         raise MissingCertificate, "Expected a private_key for signing" unless certs.private_key
         signed_info = at_xpath(@document, "//Envelope/Header/Security/Signature/SignedInfo")
-        puts body
+        puts signed_info
         signed_info = signed_info ? canonicalize(signed_info) : ""
         signature = certs.private_key.sign(OpenSSL::Digest::SHA1.new, signed_info)
         signature #.gsub("\n", '') # TODO: DRY calls to Base64.encode64(...).gsub("\n", '')
