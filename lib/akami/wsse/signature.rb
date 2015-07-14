@@ -102,12 +102,10 @@ module Akami
         {
           "ds:KeyInfo" => {
             "wsse:SecurityTokenReference" => {
-              "wsse:Reference" => {
-                "ds:x509data" => {
-                  "ds:x509issuerserial" => {
-                    "ds:x509issuername" => certs.cert.issuer.to_s.gsub('/',',')[1..-1],
-                    "ds:x509serialnumber" => certs.cert.serial.to_s
-                  },
+              "ds:x509data" => {
+                "ds:x509issuerserial" => {
+                  "ds:x509issuername" => certs.cert.issuer.to_s.gsub('/',',')[1..-1],
+                  "ds:x509serialnumber" => certs.cert.serial.to_s
                 },
               },
             },
