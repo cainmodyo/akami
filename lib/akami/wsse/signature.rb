@@ -128,15 +128,15 @@ module Akami
                   signed_info_transforms.merge(signed_info_digest_method),
                 ],
                 :attributes! => {
-                  "ds:Reference" => { "uri" => ["##{body_id}"] },
+                  "ds:Reference" => { "URI" => ["##{body_id}"] },
                 },
               }, 
               :attributes! => {
-                "ds:SignatureMethod" => { "algorithm" => RSASHA1SignatureAlgorithm },
+                "ds:SignatureMethod" => { "Algorithm" => RSASHA1SignatureAlgorithm },
               },
             },
             :attributes! => {
-              "ds:CanonicalizationMethod" => { "algorithm" => ExclusiveXMLCanonicalizationAlgorithm },
+              "ds:CanonicalizationMethod" => { "Algorithm" => ExclusiveXMLCanonicalizationAlgorithm },
             },
           },
         }
@@ -159,11 +159,11 @@ module Akami
       end
       
       def signed_info_digest_method
-        { "ds:DigestMethod" => { "ds:DigestValue" => body_digest }, :attributes! => { "ds:DigestMethod" => { "algorithm" => SHA1DigestAlgorithm } } }
+        { "ds:DigestMethod" => { "ds:DigestValue" => body_digest }, :attributes! => { "ds:DigestMethod" => { "Algorithm" => SHA1DigestAlgorithm } } }
       end
 
       def signed_info_transforms
-        { "ds:Transforms" => { "ds:Transform/" => nil, :attributes! => { "ds:Transform/" => { "algorithm" => ExclusiveXMLCanonicalizationAlgorithm } } } }
+        { "ds:Transforms" => { "ds:Transform/" => nil, :attributes! => { "ds:Transform/" => { "Algorithm" => ExclusiveXMLCanonicalizationAlgorithm } } } }
       end
 
       def uid
