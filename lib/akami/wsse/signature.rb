@@ -19,7 +19,7 @@ module Akami
       end
 
       def document=(document)
-        @document = Nokogiri::XML(document)
+        @document = Nokogiri::XML(document.to_s, &:noblanks)
       end
 
       ExclusiveXMLCanonicalizationAlgorithm = 'http://www.w3.org/2001/10/xml-exc-c14n#'.freeze
@@ -146,13 +146,16 @@ module Akami
         raise MissingCertificate, "Expected a private_key for signing" unless certs.private_key
         signed_info = at_xpath(@document, "//Envelope/Header/Security/Signature/SignedInfo")
         signed_info = signed_info ? canonicalize(signed_info) : ""
-        signature = certs.private_key.sign(OpenSSL::Digest::SHA1.new, signed_info.strip)
+        puts signed_info
+        signature = certs.private_key.sign(OpenSSL::Digest::SHA1.new, signed_info)
+        puts signature
         Base64.encode64(signature).gsub("\n", '') # TODO: DRY calls to Base64.encode64(...).gsub("\n", '')
       end
 
       def body_digest
         body = canonicalize(at_xpath(@document, "//Envelope/Body"))
-        Base64.encode64(OpenSSL::Digest::SHA1.digest(body.strip)).strip
+        puts body
+        Base64.encode64(OpenSSL::Digest::SHA1.digest(body)).strip
       end
       
       def signed_info_digest_method
