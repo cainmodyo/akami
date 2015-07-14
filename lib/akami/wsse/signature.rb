@@ -154,7 +154,7 @@ module Akami
         body = canonicalize(at_xpath(@document, "//Envelope/Body"))
         Base64.encode64(OpenSSL::Digest::SHA1.digest(body)).strip
       end
-
+      
       def signed_info_digest_method
         { "ds:DigestMethod" => { "ds:DigestValue" => body_digest }, :attributes! => { "ds:DigestMethod" => { "algorithm" => SHA1DigestAlgorithm } } }
       end
