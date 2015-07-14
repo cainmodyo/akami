@@ -162,11 +162,11 @@ module Akami
         sec_hash["wsse:Security"].merge!(extra_info)
       end
 
-      if signature?
+    #  if signature?
         sec_hash[:attributes!].merge!("soapenv:mustUnderstand" => "1")
-      else
-        sec_hash["wsse:Security"].merge!(:attributes! => { key => { "wsu:Id" => "#{tag}-#{count}", "xmlns:wsu" => WSU_NAMESPACE } })
-      end
+    #  else
+    #    sec_hash["wsse:Security"].merge!(:attributes! => { key => { "wsu:Id" => "#{tag}-#{count}", "xmlns:wsu" => WSU_NAMESPACE } })
+    #  end
 
       sec_hash
     end
