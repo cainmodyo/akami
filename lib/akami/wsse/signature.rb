@@ -102,10 +102,10 @@ module Akami
         {
           "ds:KeyInfo" => {
             "wsse:SecurityTokenReference" => {
-              "ds:x509data" => {
-                "ds:x509issuerserial" => {
-                  "ds:x509issuername" => certs.cert.issuer.to_s.gsub('/',',')[1..-1],
-                  "ds:x509serialnumber" => certs.cert.serial.to_s
+              "ds:X509Data" => {
+                "ds:X509IssuerSerial" => {
+                  "ds:X509IssuerName" => certs.cert.issuer.to_s.gsub('/',',')[1..-1],
+                  "ds:X509SerialNumber" => certs.cert.serial.to_s
                 },
               },
             },
@@ -147,7 +147,7 @@ module Akami
         signed_info = at_xpath(@document, "//Envelope/Header/Security/Signature/SignedInfo")
         signed_info = signed_info ? canonicalize(signed_info) : ""
         signature = certs.private_key.sign(OpenSSL::Digest::SHA1.new, signed_info)
-        Base64.encode64(signature).gsub("\n", '') # TODO: DRY calls to Base64.encode64(...).gsub("\n", '')
+        "\""+Base64.encode64(signature).gsub("\n", '')+"\"" # TODO: DRY calls to Base64.encode64(...).gsub("\n", '')
       end
 
       def body_digest
