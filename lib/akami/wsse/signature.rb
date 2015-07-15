@@ -147,7 +147,7 @@ module Akami
         signed_info = at_xpath(@document, "//Envelope/Header/Security/Signature/SignedInfo")
         signed_info = signed_info ? canonicalize(signed_info) : ""
         puts signed_info
-        signature = certs.private_key.sign(OpenSSL::Digest::SHA256.new, signed_info)
+        signature = certs.private_key.sign(OpenSSL::Digest::SHA1.new, signed_info)
         puts signature
         Base64.encode64(signature).gsub("\n", '') # TODO: DRY calls to Base64.encode64(...).gsub("\n", '')
       end
@@ -155,7 +155,7 @@ module Akami
       def body_digest
         body = canonicalize(at_xpath(@document, "//Envelope/Body"))
         puts body
-        Base64.encode64(OpenSSL::Digest::SHA1.digest(body)).strip
+        Base64.encode64(OpenSSL::Digest::SHA256.digest(body)).strip
       end
       
       def signed_info_digest_method
